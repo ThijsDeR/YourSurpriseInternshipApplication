@@ -44,7 +44,7 @@ export function drawLine(L: any, event: Event, map: L.Map, color: string, eventL
     polyLine.addTo(map);
 }
 
-export function drawMarker(L: any, event: Event, map: L.Map, iconUrl: string, size: latLng = [15, 15], eventListener?: () => void) {
+export function drawMarker(L: any, event: Event, map: L.Map, iconUrl: string, size: latLng = [30, 30], eventListener?: () => void) {
     const icon = L.icon({
         iconUrl: iconUrl,
         iconSize: size,
@@ -63,7 +63,7 @@ export function showPopupFunction(L: any, event: Event, map: L.Map, latLng: latL
 }
 
 export function drawTrafficJam(L: any, event: Event, map: L.Map) {
-    drawMarker(L, event, map, "images/trafficjam.png", [35, 35], () => {
+    drawMarker(L, event, map, "images/trafficjam.png", [40, 40], () => {
         showPopupFunction(L, event, map, event.goToMap)
     })
     if (!event.polyline) return;
@@ -85,7 +85,7 @@ export function drawRadar(L: any, event: Event, map: L.Map) {
 }
 
 export function drawRoadwork(L: any, event: Event, map: L.Map) {
-    drawMarker(L, event, map, "images/roadwork.png", [15, 15], () => {
+    drawMarker(L, event, map, "images/roadwork.png", [30, 30], () => {
         showPopupFunction(L, event, map, event.goToMap)
     })
     if (!event.polyline) return;
