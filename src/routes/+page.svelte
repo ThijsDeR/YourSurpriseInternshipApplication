@@ -66,12 +66,31 @@
     });
 </script>
 
-<div class="grid grid-cols-3 p-12 gap-4">
-    <div class="bg-white p-2 rounded">
+<div class="grid grid-cols-10 p-12 gap-4">
+    <div class="bg-white p-2 rounded col-span-4">
         <div id="map" />
     </div>
-    <div class="col-span-2">
-        <TrafficTable {map} traffic={roadEvents} />
+    <div class="col-span-6">
+        <TrafficTable map={map} traffic={roadEvents} />
+    </div>
+</div>
+
+
+<div class="flex justify-start flex-col gap-8 mt-24 mb-24 text-white px-8">
+    <div>
+        Legenda
+    </div>
+    <div class="grid grid-cols-10 gap-4">
+        <span class="col-span-2 inline-flex items-center rounded-md bg-orange-400/10 px-2 py-1 text-xs font-medium text-orange-400 ring-1 ring-inset ring-orange-400/20">Below 10 min</span>
+        <p class="col-span-8">This color is used when the delay in a traffic jam is below 10 min</p>
+    </div>
+    <div class="grid grid-cols-10 gap-4">
+        <span class="col-span-2 inline-flex items-center rounded-md bg-red-400/10 px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400/20">Above 10 min</span>
+        <p class="col-span-8">This color is used when the delay in a traffic jam is above 10 min</p>
+    </div>
+    <div class="grid grid-cols-10 gap-4 bg-gray-300 p-2 rounded-md">
+        <span class="col-span-2 inline-flex items-center rounded-md bg-gray-900/10 px-2 py-1 text-xs font-medium text-gray-900 ring-1 ring-inset ring-gray-900/20">Roadworks / Closed</span>
+        <p class="col-span-8 text-black">This color is used when the road is completely blocked off, either by roadworks or just closed</p>
     </div>
 </div>
 

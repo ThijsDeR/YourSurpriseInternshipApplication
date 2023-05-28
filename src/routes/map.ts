@@ -47,23 +47,21 @@ export function showPopupFunction(L: any, event: any, map: any, latLng: latLng) 
 }
 
 export function drawTrafficJam(L: any, event: any, map: any) {
-    if (!event.polyline) {
-        drawMarker(L, event, map, "images/trafficjam.png", [35, 35], () => {
+    drawMarker(L, event, map, "images/trafficjam.png", [35, 35], () => {
+        showPopupFunction(L, event, map, event.goToMap)
+    })
+    if (!event.polyline) return;
+    drawLine(
+        L,
+        event,
+        map,
+        event.delay ?
+            event.delay >= 600 ? "#ff0000" : "#ffae00"
+            : "#000000",
+        () => {
             showPopupFunction(L, event, map, event.goToMap)
-        })
-    } else {
-        drawLine(
-            L,
-            event,
-            map,
-            event.delay ?
-                event.delay >= 600 ? "#ff0000" : "#ffae00"
-                : "#000000",
-            () => {
-                showPopupFunction(L, event, map, event.goToMap)
-            }
-        )
-    }
+        }
+    )
 }
 
 export function drawRadar(L: any, event: any, map: any) {

@@ -21,8 +21,7 @@
                 Traffic Jams & Roadworks
             </h1>
             <p class="mt-2 text-sm text-gray-100">
-                A list of all the users in your account including their name,
-                title, email and role.
+                A list of all the incidents currently happening in the Netherlands.
             </p>
         </div>
     </div>
@@ -99,3 +98,21 @@
         </div>
     </div>
 </div>
+
+<style>
+    *::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    *::-webkit-scrollbar-track {
+        background-color: #011419 
+    }
+     
+    *::-webkit-scrollbar-thumb {
+      background: whitesmoke; 
+    }
+    
+    *::-webkit-scrollbar-thumb:hover {
+      background: gray; 
+    }
+</style>
