@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount, onDestroy } from "svelte";
+    import { onMount } from "svelte";
 
     export let traffic: any;
     export let map: any;
@@ -91,7 +91,6 @@
                                 </td>
                             </tr>
                         {/each}
-                        <!-- More people... -->
                     </tbody>
                 </table>
             </div>

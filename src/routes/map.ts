@@ -2,8 +2,31 @@ import polyDecoder from "polyline-encoded";
 
 export type latLng = [number, number]
 export type LatBounds = [latLng, latLng]
+export type Event = {
+    id: number,
+    road: string,
+    category: string,
+    incidentType: string,
+    goToMap: latLng,
+    fromLoc?: {
+        lat: number,
+        lon: number
+    },
+    toLoc?: {
+        lat: number,
+        lon: number
+    },
+    events: {
+        text: string
+    }[],
+    polyline?: string
+    reason?: string,
+    distance?: number,
+    delay?: number
+    
+}
 
-export function getDescriptionString(event: any) {
+export function getDescriptionString(event: Event) {
     let string = `${event.road}: ${event.incidentType}`
     if (event.events && event.events[0]) string += `<br/> ${event.events[0].text}`;
     if (event.delay != undefined && event.distance != undefined) string += `<br/> ~${Math.round(event.delay / 60)}Min - ${Math.round(event.distance / 100) / 10} km`;
@@ -11,15 +34,8 @@ export function getDescriptionString(event: any) {
     return string
 }
 
-export function getImageBoundsByPosition(pos: latLng, size: number = 1): LatBounds {
-    const factor = 0.001 * size
-    return [
-        [pos[0] - factor, pos[1] - factor],
-        [pos[0] + factor, pos[1] + factor]
-    ]
-}
-
-export function drawLine(L: any, event: any, map: any, color: string, eventListener?: () => void) {
+export function drawLine(L: any, event: Event, map: L.Map, color: string, eventListener?: () => void) {
+    // Get all the coordinates from the encoded polyline
     const latLngs = polyDecoder.decode(event.polyline);
     const polyLine = L.polyline(latLngs, {
         color: color,
@@ -28,7 +44,7 @@ export function drawLine(L: any, event: any, map: any, color: string, eventListe
     polyLine.addTo(map);
 }
 
-export function drawMarker(L: any, event: any, map: any, iconUrl: string, size: [number, number] = [15, 15], eventListener?: () => void) {
+export function drawMarker(L: any, event: Event, map: L.Map, iconUrl: string, size: latLng = [15, 15], eventListener?: () => void) {
     const icon = L.icon({
         iconUrl: iconUrl,
         iconSize: size,
@@ -38,7 +54,7 @@ export function drawMarker(L: any, event: any, map: any, iconUrl: string, size: 
     marker.addTo(map)
 }
 
-export function showPopupFunction(L: any, event: any, map: any, latLng: latLng) {
+export function showPopupFunction(L: any, event: Event, map: L.Map, latLng: latLng) {
     L.popup()
         .setLatLng(latLng)
         .setContent(getDescriptionString(event))
@@ -46,7 +62,7 @@ export function showPopupFunction(L: any, event: any, map: any, latLng: latLng) 
         .openPopup();
 }
 
-export function drawTrafficJam(L: any, event: any, map: any) {
+export function drawTrafficJam(L: any, event: Event, map: L.Map) {
     drawMarker(L, event, map, "images/trafficjam.png", [35, 35], () => {
         showPopupFunction(L, event, map, event.goToMap)
     })
@@ -64,11 +80,11 @@ export function drawTrafficJam(L: any, event: any, map: any) {
     )
 }
 
-export function drawRadar(L: any, event: any, map: any) {
+export function drawRadar(L: any, event: Event, map: L.Map) {
     drawMarker(L, event, map, "images/speedcamera.png")
 }
 
-export function drawRoadwork(L: any, event: any, map: any) {
+export function drawRoadwork(L: any, event: Event, map: L.Map) {
     drawMarker(L, event, map, "images/roadwork.png", [15, 15], () => {
         showPopupFunction(L, event, map, event.goToMap)
     })

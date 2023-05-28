@@ -3,13 +3,14 @@
     import { browser } from "$app/environment";
     import polyDecoder from "polyline-encoded";
     import { drawRadar, drawRoadwork, drawTrafficJam, type latLng } from "./map";
+    import TrafficTable from "./traffic-table.svelte";
     export let data: { traffic: any } = { traffic: {} };
 
-    import TrafficTable from "./traffic-table.svelte";
     let map: any;
     const roadEvents: any[] = [];
     const netherlands: latLng = [52, 5]
 
+    // Get all the different road events
     data.traffic.roads.forEach((road: { segments: [] }) => {
         road.segments.forEach(
             (segment: { jams?: any[]; radars?: any[]; roadworks?: any[] }) => {
@@ -20,6 +21,7 @@
         );
     });
 
+    // Get their goToMap Location for markers or their camera location
     roadEvents.forEach((event) => {
         if (event.category === "jams") event.goToMap = event.polyline ? polyDecoder.decode(event.polyline)[0] : [event.toLoc.lat, event.toLoc.lon]
         if (event.category === "radars") event.goToMap = [event.loc.lat, event.loc.lon]
@@ -32,23 +34,27 @@
             const mapElement = document.querySelector("#map")! as HTMLElement;
             map = L.map(mapElement).setView(netherlands, 6);
 
+            // Add map to leaflet
             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 attribution:
                     '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             }).addTo(map);
 
+            // Add traffic jams
             roadEvents
                 .filter((e) => e.category === "jams")
                 .forEach((jam) => {
                     drawTrafficJam(L, jam, map)
                 });
-
+            
+            // Add radars (speed checks)
             roadEvents
                 .filter((e) => e.category === "radars")
                 .forEach((radar) => {
                     drawRadar(L, radar, map)
                 });
-
+            
+            // Add roadworks
             roadEvents
                 .filter((e) => e.category === "roadworks")
                 .forEach((roadwork) => {
@@ -59,10 +65,7 @@
     });
 
     onDestroy(async () => {
-        if (map) {
-            console.log("Unloading Leaflet map.");
-            map.remove();
-        }
+        if (map) map.remove();
     });
 </script>
 
