@@ -69,11 +69,11 @@
     });
 </script>
 
-<div class="grid grid-cols-10 p-12 gap-4">
-    <div class="bg-white p-2 rounded col-span-4">
+<div class="grid grid-cols-1 lg:grid-cols-10 p-12 gap-4">
+    <div class="bg-white p-2 rounded lg:col-span-4">
         <div id="map" />
     </div>
-    <div class="col-span-6">
+    <div class="lg:col-span-6">
         <TrafficTable map={map} traffic={roadEvents} />
     </div>
 </div>
@@ -100,7 +100,7 @@
 <style>
     @import "leaflet/dist/leaflet.css";
     #map {
-        min-height: 100px;
+        min-height: 500px;
         min-width: 100px;
         height: 100%;
     }
